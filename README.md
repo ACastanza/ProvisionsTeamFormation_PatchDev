@@ -1,5 +1,15 @@
-ProvisionsTeamFormation 1.3.1b
+ProvisionsTeamFormation 1.3.3 - Unofficial
 =============
+
+Unofficial version Changelog:
+- Group Lead (crown) will take priority over group role
+- Adjust custom player colors to use @names instead of character names
+- Increase Group Lead icon size slightly
+- Add Necro and Arcanist Icons
+
+Original Readme
+=============
+
 
 TeamFormation is a user Interface for The Elder Scrolls Online, designed to show the positions and health of your teammates, like a radar.
 
