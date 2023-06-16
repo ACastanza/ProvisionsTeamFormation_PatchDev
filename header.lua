@@ -4,7 +4,7 @@ ProvTF =
 	namePublic = "Prov's TeamFormation",
 	nameColor = "|cFF9999Team|cFF0000Formation|r",
 	author = "|c00C000Provision|r",
-	version = "1.3.1b", --3 endroits
+	version = "1.3.3", --3 endroits
 	CPL = nil,
 	defaults =
 	{ --Don't forget header.lua
@@ -44,11 +44,13 @@ ProvTF =
 }
 
 CLASS_ID2NAME = {
-	[1] = 'Dragonknight',
-	[2] = 'Sorcerer',
-	[3] = 'Nightblade',
-	[4] = 'Warden',
-	[6] = 'Templar',
+	[1] = 'dragonknight',
+	[2] = 'sorcerer',
+	[3] = 'nightblade',
+    [4] = 'warden',
+    [5] = 'necromancer',
+    [6] = 'templar',
+	[117] = "arcanist"
 }
 
-LAM2 = LibStub:GetLibrary("LibAddonMenu-2.0")
+LAM2 = LibAddonMenu2

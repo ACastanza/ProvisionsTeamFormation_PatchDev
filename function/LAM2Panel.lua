@@ -1,6 +1,13 @@
 local function colorizePseudo(rgb, pseudo)
 	local color = ZO_ColorDef:New(unpack(rgb))
-	return "|c" .. color:ToHex() .. "|t24:24:EsoUI/Art/Miscellaneous/Gamepad/gp_charNameIcon.dds:inheritcolor|t " .. pseudo
+	local icon = "EsoUI/Art/Miscellaneous/Gamepad/gp_charNameIcon.dds"
+	if pseudo:find("role_") then
+		local role = pseudo:gsub("role_", "")
+		if role == "healer" or role == "dps" or role == "tank" then
+		 icon = "EsoUI/Art/LFG/LFG_" .. role .. "_up.dds"
+		end
+	end
+	return "|c" .. color:ToHex() .. "|t24:24:" .. icon .. ":inheritcolor|t " .. pseudo
 end
 
 local function TeamFormation_mapChoices(func, array)
@@ -295,25 +302,35 @@ function TeamFormation_createLAM2Panel()
 				},
 				[2] = {
 					type = "description",
+					text = GetString(SI_TF_SETTING_COLOROPTIONS_TOOLTIP2),
+				},
+				[3] = {
+					type = "description",
 					text = GetString(SI_TF_SETTING_COLORRESET_TOOLTIP),
 					width = "half",
 				},
-				[3] = {
+				[4] = {
 					type = "button",
 					name = GetString(SI_TF_SETTING_COLORRESET),
 					tooltip = GetString(SI_TF_SETTING_COLORRESET_TOOLTIP),
 					func = function()
-						ProvTF.vars.jRules = {}
+						local ctrl_dropdown = WINDOW_MANAGER:GetControlByName("ProvTF#jRulesList")
+						local selected = ctrl_dropdown.combobox.m_comboBox:GetSelectedItem()
+						if selected ~= "" then
+							local pseudo = string.match(selected, "^.+\|t (.+)$")
+							ProvTF.vars.jRules[pseudo] = nil
+						end
 						WINDOW_MANAGER:GetControlByName("ProvTF#jRulesList"):UpdateChoices({})
+						ctrl_dropdown:UpdateChoices(TeamFormation_mapJRULES())
 					end,
 					width = "half"
 				},
-				[4] = {
+				[5] = {
 					type = "header",
 					name = GetString(SI_TF_SETTING_JRULES),
 					width = "full",
 				},
-				[5] = {
+				[6] = {
 					type = "editbox",
 					name = GetString(SI_TF_SETTING_JRULES_PSEUDOADD), -- or string id or function returning a string
 					tooltip = GetString(SI_TF_SETTING_JRULES_PSEUDOADD_TOOLTIP),
@@ -337,7 +354,7 @@ function TeamFormation_createLAM2Panel()
 					width = "full",
 					reference = "ProvTF#jRulesBox",
 				},
-				[6] = {
+				[7] = {
 					type = "button",
 					name = GetString(SI_TF_SETTING_JRULES_ADD),
 					tooltip = GetString(SI_TF_SETTING_JRULES_PSEUDOADD_TOOLTIP),
@@ -356,7 +373,7 @@ function TeamFormation_createLAM2Panel()
 					end,
 					width = "half",
 				},
-				[7] = {
+				[8] = {
 					type = "slider",
 					name = GetString(SI_TF_SETTING_JRULES_PICKPSEUDO),
 					tooltip = GetString(SI_TF_SETTING_JRULES_PICKPSEUDO_TOOLTIP),
@@ -375,7 +392,7 @@ function TeamFormation_createLAM2Panel()
 					width = "half",
 					disabled = function() return not IsUnitGrouped("player") end,
 				},
-				[8] = {
+				[9] = {
 					type = "dropdown",
 					name = GetString(SI_TF_SETTING_JRULES_PSEUDOCHOICE),
 					tooltip = GetString(SI_TF_SETTING_JRULES_PSEUDOCHOICE_TOOLTIP),
@@ -388,7 +405,7 @@ function TeamFormation_createLAM2Panel()
 					width = "half",
 					reference = "ProvTF#jRulesList",
 				},
-				[9] = {
+				[10] = {
 					type = "colorpicker",
 					name = GetString(SI_TF_SETTING_JRULES_COLORCHOICE) .. " (RGB)",
 					tooltip = GetString(SI_TF_SETTING_JRULES_COLORCHOICE_TOOLTIP),
@@ -423,7 +440,7 @@ function TeamFormation_createLAM2Panel()
 						return selected == ""
 					end,
 				},
-				[10] = {
+				[11] = {
 					type = "slider",
 					name = GetString(SI_TF_SETTING_JRULES_COLORCHOICE) .. " (HSL)",
 					tooltip = GetString(SI_TF_SETTING_JRULES_COLORCHOICE_TOOLTIP),

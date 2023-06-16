@@ -3,7 +3,7 @@ local function TeamFormation_MakeIcon(index)
 
 	local posLifeBar = (true and 14 or -14)
 
-	ProvTF.UI.Player[index] = CreateControl(nil, ProvTF.UI, CT_TOPLEVELCONTROL)
+	ProvTF.UI.Player[index] = CreateControl(nil, ProvTF.UI, CT_CONTROL)
 	ProvTF.UI.Player[index]:SetDrawLevel(10)
 	ProvTF.UI.Player[index]:SetHidden(true)
 	ProvTF.UI.Player[index]:SetAlpha(0)
@@ -222,7 +222,7 @@ end
 
 local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat)
 	local unitTag = ZO_Group_GetUnitTagForGroupIndex(index)
-	local name = GetUnitName(unitTag)
+	local name = GetUnitDisplayName(unitTag)
 	local health, maxHealth, _ = GetUnitPower(unitTag, POWERTYPE_HEALTH)
 	local sizeHealthBar = zo_round(24 * health / maxHealth)
 	local isUnitBeingResurrected = isDead and IsUnitBeingResurrected(unitTag)
@@ -237,7 +237,16 @@ local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat)
 	local updateIsNecessaryOnBreadcrumb = updateIsNecessary(index, "isBreadcrumb", ProvTF.UI.Player[index].data.isBreadcrumb)
 	local updateIsNecessaryOnSSOnCurrentMap = updateIsNecessary(index, "shouldShowOnCurrentMap", ProvTF.UI.Player[index].data.shouldShowOnCurrentMap)
 	local isMe = AreUnitsEqual("player", unitTag)
-	local r, g, b = unpack(ProvTF.vars.jRules[name] or {1, 1, 1})
+	local isDps, isHealer, isTank = GetGroupMemberRolesFix(unitTag)
+	local role = "dps"
+	if isTank then
+		role = "tank"
+	elseif isHealer then
+		role = "healer"
+	end
+	local roleColor = (ProvTF.vars.jRules["role_" .. role] and (not isMe)) and ProvTF.vars.jRules["role_" .. role] or {1, 1, 1}
+	local r, g, b = unpack(ProvTF.vars.jRules[name] or roleColor)
+	
 
 	-- Set Icon
 	if updateIsNecessary(index, "name", name) or updateIsNecessaryOnGrLeader or updateIsNecessaryOnDead or updateIsNecessaryOnBreadcrumb or updateIsNecessaryOnSSOnCurrentMap then
@@ -249,6 +258,7 @@ local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat)
 		ProvTF.UI.Player[index]:SetAlpha(1)
 
 		if isMe then
+			ProvTF.UI.Player[index].Icon:SetColor(r, g, b, 1)
 			ProvTF.UI.Player[index].Icon:SetTexture("/EsoUI/Art/Icons/mapkey/mapkey_player.dds")
 		elseif ProvTF.UI.Player[index].data.isBreadcrumb then
 			if isGroupLeader then
@@ -273,21 +283,14 @@ local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat)
 			else
 				ProvTF.UI.Player[index].Icon:SetDimensions(32, 32)
 			end
-		elseif ProvTF.vars.roleIcon then
-			local isDps, isHealer, isTank = GetGroupMemberRolesFix(unitTag)
-			local role = "dps"
-			if isTank then
-				role = "tank"
-			elseif isHealer then
-				role = "healer"
-			end
-			ProvTF.UI.Player[index].Icon:SetTexture("/EsoUI/Art/LFG/LFG_" .. role .. "_up.dds")
-			ProvTF.UI.Player[index].Icon:SetDimensions(32, 32)
 		elseif isGroupLeader then
 			ProvTF.UI.Player[index].Icon:SetTexture("/EsoUI/Art/Compass/groupLeader.dds")
+			ProvTF.UI.Player[index].Icon:SetDimensions(48, 48)
+		elseif ProvTF.vars.roleIcon then
+			ProvTF.UI.Player[index].Icon:SetTexture("/EsoUI/Art/LFG/LFG_" .. role .. "_up.dds")
 			ProvTF.UI.Player[index].Icon:SetDimensions(32, 32)
 		elseif class ~= "nil" then
-			ProvTF.UI.Player[index].Icon:SetTexture("/EsoUI/Art/Icons/class/class_" .. class .. ".dds")
+			ProvTF.UI.Player[index].Icon:SetTexture("/esoui/art/icons/class/class_" .. class .. ".dds")
 		else
 			ProvTF.UI.Player[index].Icon:SetTexture("/EsoUI/Art/Icons/mapkey/mapkey_groupmember.dds")
 			ProvTF.UI.Player[index].Icon:SetDimensions(16, 16)
@@ -351,13 +354,13 @@ local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat)
 		end
 	end
 
-	-- Set Player's Ping
+--[[	-- Set Player's Ping -- Disable Map Pings to prevent conflicts with ult share
 	x, y = GetMapPing(unitTag)
 	if not (x == 0 and y == 0) then
 		x, y = TeamFormation_CalculateXY(x, y)
 		TeamFormation_DrawGroupPoint(index, x, y, "/EsoUI/Art/mappins/mapping.dds")
 	end
-	
+]]	
 	CALLBACK_MANAGER:FireCallbacks("TEAMFORMATION_UpdateIcon", index, unitTag, sameZone, isDead, isInCombat)
 end
 
@@ -418,7 +421,7 @@ local function TeamFormation_uiLoop()
 
 	for i = 1, GROUP_SIZE_MAX do
 		local unitTag = ZO_Group_GetUnitTagForGroupIndex(i)
-		local name = GetUnitName(unitTag)
+		local name = GetUnitDisplayName(unitTag)
 		local x, y, heading = GetMapPlayerPosition(unitTag)
 		local zone = GetUnitZone(unitTag)
 		local isMe = AreUnitsEqual("player", unitTag)
