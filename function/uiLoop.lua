@@ -237,7 +237,6 @@ local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat)
 	local updateIsNecessaryOnBreadcrumb = updateIsNecessary(index, "isBreadcrumb", ProvTF.UI.Player[index].data.isBreadcrumb)
 	local updateIsNecessaryOnSSOnCurrentMap = updateIsNecessary(index, "shouldShowOnCurrentMap", ProvTF.UI.Player[index].data.shouldShowOnCurrentMap)
 	local isMe = AreUnitsEqual("player", unitTag)
-	local assignedTargetMarker = GetUnitTargetMarkerType(unitTag)
 	local isDps, isHealer, isTank = GetGroupMemberRolesFix(unitTag)
 	local role = "dps"
 	if isTank then
@@ -247,10 +246,11 @@ local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat)
 	end
 	local roleColor = (ProvTF.vars.jRules["role_" .. role] and (not isMe)) and ProvTF.vars.jRules["role_" .. role] or {1, 1, 1}
 	local r, g, b = unpack(ProvTF.vars.jRules[name] or roleColor)
+	
 
 	-- Set Icon
 	if updateIsNecessary(index, "name", name) or updateIsNecessaryOnGrLeader or updateIsNecessaryOnDead or updateIsNecessaryOnBreadcrumb or updateIsNecessaryOnSSOnCurrentMap then
-		local class = tostring(ProvTF.CLASS_ID2NAME[GetUnitClassId(unitTag)])
+		local class = tostring(CLASS_ID2NAME[GetUnitClassId(unitTag)])
 		ProvTF.UI.Player[index].Icon:SetColor(r, g, b, 1)
 		ProvTF.UI.Player[index].Icon:SetTextureRotation(0)
 		ProvTF.UI.Player[index].Icon:SetDimensions(24, 24)
@@ -286,14 +286,11 @@ local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat)
 		elseif isGroupLeader then
 			ProvTF.UI.Player[index].Icon:SetTexture("/EsoUI/Art/Compass/groupLeader.dds")
 			ProvTF.UI.Player[index].Icon:SetDimensions(48, 48)
-		elseif ProvTF.vars.roleIcon and assignedTargetMarker == 0 then
+		elseif ProvTF.vars.roleIcon then
 			ProvTF.UI.Player[index].Icon:SetTexture("/EsoUI/Art/LFG/LFG_" .. role .. "_up.dds")
 			ProvTF.UI.Player[index].Icon:SetDimensions(32, 32)
-		elseif class ~= "nil" and assignedTargetMarker == 0 then
+		elseif class ~= "nil" then
 			ProvTF.UI.Player[index].Icon:SetTexture("/esoui/art/icons/class/class_" .. class .. ".dds")
-		elseif assignedTargetMarker ~= 0 then
-			ProvTF.UI.Player[index].Icon:SetTexture(ProvTF.defaultTARGET_MARKER_KEYBOARD_ICON_PATHS[assignedTargetMarker])
-			ProvTF.UI.Player[index].Icon:SetDimensions(32, 32)
 		else
 			ProvTF.UI.Player[index].Icon:SetTexture("/EsoUI/Art/Icons/mapkey/mapkey_groupmember.dds")
 			ProvTF.UI.Player[index].Icon:SetDimensions(16, 16)
@@ -404,8 +401,7 @@ local function TeamFormation_uiLoop()
 	if updateIsNecessary(1, "LAM2PanelisHidden", not LAM2Panel:IsHidden()) then
 		if not LAM2Panel:IsHidden() then
 			TeamFormation_SetHidden(false)
-            -- ProvTF.UI:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, LAM2Panel:GetWidth() + LAM2Panel:GetLeft() + 40, LAM2Panel:GetTop())
-			ProvTF.UI:SetAnchor(CENTER, GuiRoot, CENTER, ProvTF.vars.posx, ProvTF.vars.posy) -- Don't want it to move and then get stuck moved whenever I open settings
+			ProvTF.UI:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, LAM2Panel:GetWidth() + LAM2Panel:GetLeft() + 40, LAM2Panel:GetTop())
 		else
 			ProvTF.UI:SetAnchor(CENTER, GuiRoot, CENTER, ProvTF.vars.posx, ProvTF.vars.posy)
 		end

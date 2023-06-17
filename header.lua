@@ -43,7 +43,7 @@ ProvTF =
 	}
 }
 
-ProvTF.CLASS_ID2NAME = {
+CLASS_ID2NAME = {
 	[1] = 'dragonknight',
 	[2] = 'sorcerer',
 	[3] = 'nightblade',
@@ -51,18 +51,6 @@ ProvTF.CLASS_ID2NAME = {
     [5] = 'necromancer',
     [6] = 'templar',
 	[117] = "arcanist"
-}
-
-ProvTF.defaultTARGET_MARKER_KEYBOARD_ICON_PATHS =
-{
-	[TARGET_MARKER_TYPE_ONE] = "EsoUI/Art/TargetMarkers/Target_Blue_Square_64.dds",
-	[TARGET_MARKER_TYPE_TWO] = "EsoUI/Art/TargetMarkers/Target_Gold_Star_64.dds",
-	[TARGET_MARKER_TYPE_THREE] = "EsoUI/Art/TargetMarkers/Target_Green_Circle_64.dds",
-	[TARGET_MARKER_TYPE_FOUR] = "EsoUI/Art/TargetMarkers/Target_Orange_Triangle_64.dds",
-	[TARGET_MARKER_TYPE_FIVE] = "EsoUI/Art/TargetMarkers/Target_Pink_Moons_64.dds",
-	[TARGET_MARKER_TYPE_SIX] = "EsoUI/Art/TargetMarkers/Target_Purple_Oblivion_64.dds",
-	[TARGET_MARKER_TYPE_SEVEN] = "EsoUI/Art/TargetMarkers/Target_Red_Weapons_64.dds",
-	[TARGET_MARKER_TYPE_EIGHT] = "EsoUI/Art/TargetMarkers/Target_White_Skull_64.dds",
 }
 
 LAM2 = LibAddonMenu2
