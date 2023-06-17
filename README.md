@@ -6,6 +6,7 @@ Unofficial version Changelog:
 - Adjust custom player colors to use @names instead of character names
 - Increase Group Lead icon size slightly
 - Add Necro and Arcanist Icons
+- Rudimentary Target Marker suppoort. Target Markers will take priority over role or class icons but not group leader.
 
 Original Readme
 =============
