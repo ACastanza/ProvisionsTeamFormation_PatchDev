@@ -310,10 +310,11 @@ local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat, tar
             if assignedTargetMarkerID > 0 then
 				local assignedTargetMarker = tostring(ProvTF.TARGET_MARKER_PATHS[assignedTargetMarkerID])
 				ProvTF.UI.Player[index].Icon:SetTexture(assignedTargetMarker)
+				ProvTF.UI.Player[index].Icon:SetDimensions(24, 24)
 			else
 				ProvTF.UI.Player[index].Icon:SetTexture("/EsoUI/Art/LFG/LFG_" .. role .. "_up.dds")
+				ProvTF.UI.Player[index].Icon:SetDimensions(32, 32)
 			end
-			ProvTF.UI.Player[index].Icon:SetDimensions(32, 32)
 		elseif class ~= "nil" then
 			if assignedTargetMarkerID > 0 then
 				local assignedTargetMarker = tostring(ProvTF.TARGET_MARKER_PATHS[assignedTargetMarkerID])
