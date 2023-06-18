@@ -47,6 +47,9 @@ local function TeamFormation_reset()
 	ProvTF.vars.siege = ProvTF.defaults.siege
 
 	ProvTF.vars.myAlpha = ProvTF.defaults.myAlpha
+	ProvTF.vars.roleAlpha = ProvTF.defaults.roleAlpha
+	ProvTF.vars.classAlpha = ProvTF.defaults.classAlpha
+	ProvTF.vars.targetMarkerAlpha = ProvTF.defaults.targetMarkerAlpha
 	ProvTF.vars.roleIcon = ProvTF.defaults.roleIcon
 	
 	-- Don't pass default's jRules reference.
@@ -265,6 +268,16 @@ function TeamFormation_createLAM2Panel()
 					text = GetString(SI_TF_SETTING_PLAYERICON_TOOLTIP),
 				},
 				[2] = {
+					type = "checkbox",
+					name = GetString(SI_TF_SETTING_ROLE),
+					tooltip = GetString(SI_TF_SETTING_ROLE_TOOLTIP),
+					getFunc = function() return ProvTF.vars.roleIcon end,
+					setFunc = function(value)
+						ProvTF.vars.roleIcon = value
+					end,
+					width = "full",
+				},
+				[3] = {
 					type = "slider",
 					name = GetString(SI_TF_SETTING_YOURALPHA) .. " (%)",
 					tooltip = GetString(SI_TF_SETTING_YOURALPHA_TOOLTIP),
@@ -275,13 +288,36 @@ function TeamFormation_createLAM2Panel()
 					end,
 					width = "full",
 				},
-				[3] = {
-					type = "checkbox",
-					name = GetString(SI_TF_SETTING_ROLE),
-					tooltip = GetString(SI_TF_SETTING_ROLE_TOOLTIP),
-					getFunc = function() return ProvTF.vars.roleIcon end,
+				[4] = {
+					type = "slider",
+					name = GetString(SI_TF_SETTING_TARGETMARKERALPHA) .. " (%)",
+					tooltip = GetString(SI_TF_SETTING_TARGETMARKERALPHA_TOOLTIP),
+					min = 0, max = 100, step = 1,
+					getFunc = function() return ProvTF.vars.targetMarkerAlpha * 100 end,
 					setFunc = function(value)
-						ProvTF.vars.roleIcon = value
+						ProvTF.vars.targetMarkerAlpha = value / 100
+					end,
+					width = "full",
+				},
+				[5] = {
+					type = "slider",
+					name = GetString(SI_TF_SETTING_ROLEALPHA) .. " (%)",
+					tooltip = GetString(SI_TF_SETTING_ROLEALPHA_TOOLTIP),
+					min = 0, max = 100, step = 1,
+					getFunc = function() return ProvTF.vars.roleAlpha * 100 end,
+					setFunc = function(value)
+						ProvTF.vars.roleAlpha = value / 100
+					end,
+					width = "full",
+				},
+				[6] = {
+					type = "slider",
+					name = GetString(SI_TF_SETTING_CLASSALPHA) .. " (%)",
+					tooltip = GetString(SI_TF_SETTING_CLASSALPHA_TOOLTIP),
+					min = 0, max = 100, step = 1,
+					getFunc = function() return ProvTF.vars.classAlpha * 100 end,
+					setFunc = function(value)
+						ProvTF.vars.classAlpha = value / 100
 					end,
 					width = "full",
 				},

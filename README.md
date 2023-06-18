@@ -1,12 +1,13 @@
-ProvisionsTeamFormation 1.3.3 - Unofficial
+ProvisionsTeamFormation 1.3.4 - Unofficial
 =============
 
 Unofficial version Changelog:
 - Group Lead (crown) will take priority over group role
-- Adjust custom player colors to use @names instead of character names
+- Adjust custom player colors to enable use of @names in addition to character names (character name settings will override @name settings)
 - Increase Group Lead icon size slightly
 - Add Necro and Arcanist Icons
 - Rudimentary Target Marker suppoort. Target Markers will take priority over role or class icons but not group leader.
+- Added Alpha settings for Role, Class, and Target Marker icons
 
 Original Readme
 =============

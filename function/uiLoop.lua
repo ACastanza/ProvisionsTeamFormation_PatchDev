@@ -237,6 +237,9 @@ end
 local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat, targetMarkerChanged)
 	local unitTag = ZO_Group_GetUnitTagForGroupIndex(index)
 	local name = GetUnitDisplayName(unitTag)
+	local characterName = GetUnitName(unitTag)
+	local class = tostring(ProvTF.CLASS_ID2NAME[GetUnitClassId(unitTag)])
+	local assignedTargetMarkerID = GetUnitTargetMarkerType(unitTag)
 	local health, maxHealth, _ = GetUnitPower(unitTag, POWERTYPE_HEALTH)
 	local sizeHealthBar = zo_round(24 * health / maxHealth)
 	local isUnitBeingResurrected = isDead and IsUnitBeingResurrected(unitTag)
@@ -264,13 +267,11 @@ local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat, tar
 	end
 	local roleColor = (ProvTF.vars.jRules["role_" .. role] and (not isMe)) and ProvTF.vars.jRules["role_" .. role] or
 	{ 1, 1, 1 }
-	local r, g, b = unpack(ProvTF.vars.jRules[name] or roleColor)
+	local r, g, b = unpack(ProvTF.vars.jRules[characterName] or ProvTF.vars.jRules[name] or roleColor)
 
 
 	-- Set Icon
 	if updateIsNecessary(index, "name", name) or updateIsNecessaryOnGrLeader or updateIsNecessaryOnDead or updateIsNecessaryOnBreadcrumb or updateIsNecessaryOnSSOnCurrentMap or updateIsNecessaryOnTargetMarkerChange then
-		local class = tostring(ProvTF.CLASS_ID2NAME[GetUnitClassId(unitTag)])
-        local assignedTargetMarkerID = GetUnitTargetMarkerType(unitTag)
 		ProvTF.UI.Player[index].Icon:SetColor(r, g, b, 1)
 		ProvTF.UI.Player[index].Icon:SetTextureRotation(0)
 		ProvTF.UI.Player[index].Icon:SetDimensions(24, 24)
@@ -383,6 +384,39 @@ local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat, tar
 			ProvTF.UI.Player[index]:SetAlpha(myAlpha)
 			ProvTF.UI.Player[index].data.alpha = myAlpha
 		end
+	elseif assignedTargetMarkerID > 0 and sameZone then
+		local targetMarkerAlpha = ProvTF.vars.targetMarkerAlpha
+		if updateIsNecessary(index, "targetMarkerAlpha", targetMarkerAlpha) then
+			if targetMarkerAlpha == 0 then
+				ProvTF.UI.Player[index]:SetHidden(true)
+			else
+				ProvTF.UI.Player[index]:SetHidden(false)
+			end
+			ProvTF.UI.Player[index]:SetAlpha(targetMarkerAlpha)
+			ProvTF.UI.Player[index].data.alpha = targetMarkerAlpha
+		end
+    elseif ProvTF.vars.roleIcon and sameZone then
+		local roleAlpha = ProvTF.vars.roleAlpha
+		if updateIsNecessary(index, "roleAlpha", roleAlpha) then
+			if roleAlpha == 0 then
+				ProvTF.UI.Player[index]:SetHidden(true)
+			else
+				ProvTF.UI.Player[index]:SetHidden(false)
+			end
+			ProvTF.UI.Player[index]:SetAlpha(roleAlpha)
+			ProvTF.UI.Player[index].data.alpha = roleAlpha
+		end
+	elseif class ~= "nil" and sameZone then
+		local classAlpha = ProvTF.vars.classAlpha
+		if updateIsNecessary(index, "classAlpha", classAlpha) then
+			if classAlpha == 0 then
+				ProvTF.UI.Player[index]:SetHidden(true)
+			else
+				ProvTF.UI.Player[index]:SetHidden(false)
+			end
+			ProvTF.UI.Player[index]:SetAlpha(classAlpha)
+			ProvTF.UI.Player[index].data.alpha = classAlpha
+		end
 	else
 		local defAlpha = sameZone and ((not ProvTF.UI.Player[index].data.isOut) and 1 or 0.4) or 0.2
 		if updateIsNecessary(index, "defAlpha", defAlpha) then
@@ -461,6 +495,7 @@ local function TeamFormation_uiLoop()
 	for i = 1, GROUP_SIZE_MAX do
 		local unitTag = ZO_Group_GetUnitTagForGroupIndex(i)
 		local name = GetUnitDisplayName(unitTag)
+		local characterName = GetUnitName(unitTag)
 		local x, y, heading = GetMapPlayerPosition(unitTag)
 		local zone = GetUnitZone(unitTag)
 		local isMe = AreUnitsEqual("player", unitTag)
@@ -566,7 +601,8 @@ local function TeamFormation_uiLoop()
 
 				local ctrl_class = WINDOW_MANAGER:GetControlByName("ZO_GroupListList1Row" ..
 				inTable(ABCOrder, name) .. "ClassIcon")
-				ctrl_class:SetColor(unpack(ProvTF.vars.jRules[name] or { 1, 1, 1 }))
+				ctrl_class:SetColor(unpack(ProvTF.vars.jRules[characterName] or ProvTF.vars.jRules[name] or { 1, 1, 1 }))
+			else	
 			end
 		elseif ProvTF.UI.Player[i] then
 			ProvTF.UI.Player[i]:SetHidden(true)

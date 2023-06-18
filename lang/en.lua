@@ -52,6 +52,12 @@ ZO_CreateStringId("SI_TF_SETTING_YOURALPHA", "Opacity of the player arrow")
 ZO_CreateStringId("SI_TF_SETTING_YOURALPHA_TOOLTIP", "0 = Hidden\nChanges the transparency of the player arrow (blue arrow).")
 ZO_CreateStringId("SI_TF_SETTING_ROLE", "Role icon")
 ZO_CreateStringId("SI_TF_SETTING_ROLE_TOOLTIP", "Show role icon instead of class icon.")
+ZO_CreateStringId("SI_TF_SETTING_ROLEALPHA", "Opacity of the Role icons")
+ZO_CreateStringId("SI_TF_SETTING_ROLEALPHA_TOOLTIP", "0 = Hidden\nChanges the transparency of role icons.")
+ZO_CreateStringId("SI_TF_SETTING_CLASSALPHA", "Opacity of the Class icons")
+ZO_CreateStringId("SI_TF_SETTING_CLASSALPHA_TOOLTIP", "0 = Hidden\nChanges the transparency of class icons.")
+ZO_CreateStringId("SI_TF_SETTING_TARGETMARKERALPHA", "Opacity of target markers")
+ZO_CreateStringId("SI_TF_SETTING_TARGETMARKERALPHA_TOOLTIP", "0 = Hidden\nChanges the transparency of target markers.")
 
 ZO_CreateStringId("SI_TF_SETTING_HRADDON", "[NEW] Customize icon color with the following settings.");
 
