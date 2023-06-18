@@ -469,7 +469,7 @@ local function TeamFormation_uiLoop()
         local shouldShowOnCurrentMap = false
         local assignedTargetMarkerID = GetUnitTargetMarkerType(unitTag)
 		local targetMarkerChanged = false
-		if assignedTargetMarkerID ~= 0 and not isMe then
+		if not isMe then
             local loggedTargetMarkerID = assignedTargetMarkers[unitTag]
             if loggedTargetMarkerID ~= assignedTargetMarkerID then
 				targetMarkerChanged = true
