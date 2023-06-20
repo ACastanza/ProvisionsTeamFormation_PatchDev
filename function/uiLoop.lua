@@ -384,6 +384,17 @@ local function TeamFormation_UpdateIcon(index, sameZone, isDead, isInCombat, tar
 			ProvTF.UI.Player[index]:SetAlpha(myAlpha)
 			ProvTF.UI.Player[index].data.alpha = myAlpha
 		end
+	elseif isGroupLeader and sameZone then
+		local groupLeaderAlpha = ProvTF.vars.groupLeaderAlpha
+		if updateIsNecessary(index, "groupLeaderAlpha", groupLeaderAlpha) then
+			if groupLeaderAlpha == 0 then
+				ProvTF.UI.Player[index]:SetHidden(true)
+			else
+				ProvTF.UI.Player[index]:SetHidden(false)
+			end
+			ProvTF.UI.Player[index]:SetAlpha(groupLeaderAlpha)
+			ProvTF.UI.Player[index].data.alpha = groupLeaderAlpha
+		end
 	elseif assignedTargetMarkerID > 0 and sameZone then
 		local targetMarkerAlpha = ProvTF.vars.targetMarkerAlpha
 		if updateIsNecessary(index, "targetMarkerAlpha", targetMarkerAlpha) then

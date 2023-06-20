@@ -27,9 +27,10 @@ ProvTF =
 		siege		= true,
 
 		myAlpha 	= .72,
-		roleAlpha   = .6,
-		classAlpha = .6,
+		groupLeaderAlpha = .72,
 		targetMarkerAlpha = .6,
+		roleAlpha         = .6,
+		classAlpha = .6,
 		roleIcon          = false,
 
 		jRules		= {},

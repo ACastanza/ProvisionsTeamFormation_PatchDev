@@ -47,9 +47,10 @@ local function TeamFormation_reset()
 	ProvTF.vars.siege = ProvTF.defaults.siege
 
 	ProvTF.vars.myAlpha = ProvTF.defaults.myAlpha
+	ProvTF.vars.groupLeaderAlpha = ProvTF.defaults.groupLeaderAlpha
+	ProvTF.vars.targetMarkerAlpha = ProvTF.defaults.targetMarkerAlpha
 	ProvTF.vars.roleAlpha = ProvTF.defaults.roleAlpha
 	ProvTF.vars.classAlpha = ProvTF.defaults.classAlpha
-	ProvTF.vars.targetMarkerAlpha = ProvTF.defaults.targetMarkerAlpha
 	ProvTF.vars.roleIcon = ProvTF.defaults.roleIcon
 	
 	-- Don't pass default's jRules reference.
@@ -290,6 +291,17 @@ function TeamFormation_createLAM2Panel()
 				},
 				[4] = {
 					type = "slider",
+					name = GetString(SI_TF_SETTING_GROUPLEADERALPHA) .. " (%)",
+					tooltip = GetString(SI_TF_SETTING_SI_TF_SETTING_GROUPLEADERALPHA_TOOLTIP),
+					min = 0, max = 100, step = 1,
+					getFunc = function() return ProvTF.vars.groupLeaderAlpha * 100 end,
+					setFunc = function(value)
+						ProvTF.vars.groupLeaderAlpha = value / 100
+					end,
+					width = "full",
+				},
+				[5] = {
+					type = "slider",
 					name = GetString(SI_TF_SETTING_TARGETMARKERALPHA) .. " (%)",
 					tooltip = GetString(SI_TF_SETTING_TARGETMARKERALPHA_TOOLTIP),
 					min = 0, max = 100, step = 1,
@@ -299,7 +311,7 @@ function TeamFormation_createLAM2Panel()
 					end,
 					width = "full",
 				},
-				[5] = {
+				[6] = {
 					type = "slider",
 					name = GetString(SI_TF_SETTING_ROLEALPHA) .. " (%)",
 					tooltip = GetString(SI_TF_SETTING_ROLEALPHA_TOOLTIP),
@@ -310,7 +322,7 @@ function TeamFormation_createLAM2Panel()
 					end,
 					width = "full",
 				},
-				[6] = {
+				[7] = {
 					type = "slider",
 					name = GetString(SI_TF_SETTING_CLASSALPHA) .. " (%)",
 					tooltip = GetString(SI_TF_SETTING_CLASSALPHA_TOOLTIP),
