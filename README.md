@@ -7,7 +7,7 @@ Unofficial version Changelog:
 - Increase Group Lead icon size slightly
 - Add Necro and Arcanist Icons
 - Rudimentary Target Marker suppoort. Target Markers will take priority over role or class icons but not group leader.
-- Added Alpha settings for Role, Class, and Target Marker icons
+- Added Alpha settings for Group Leader, Role, Class, and Target Marker icons
 
 Original Readme
 =============
